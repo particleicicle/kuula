@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
@@ -7,9 +8,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance
     {
         get {
+            if(_instance == null)
+                return new GameObject("GameManager").AddComponent<GameManager>();
+            
             return _instance;
         }
     }
+    
+    public static readonly WaitForFixedUpdate FixedUpdateDelay = new ();
 
     private Renderer playerRenderer;
 
@@ -24,15 +30,37 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        SceneManager.activeSceneChanged += delegate(Scene _, Scene _) {
+        
+
+        SceneManager.activeSceneChanged += delegate(Scene _, Scene loadedScene) {
+            if(loadedScene.name == "level0")
+                StartCoroutine(WaitForTouch());
+            else 
+                Camera.main.gameObject.AddComponent<MoveCamera>();
+            
             playerOffscreenFor = 0;
-            playerRenderer = GameObject.FindGameObjectWithTag("Player").GetComponent<Renderer>();
+            var playerGO = GameObject.FindGameObjectWithTag("Player");
+            if(playerGO != null){
+                _player = playerGO.GetComponent<Player>();
+                playerRenderer = playerGO.GetComponent<Renderer>();
+            }
         };
     }
 
-    void Start(){
+    private IEnumerator WaitForTouch(){
+        
+        while(Input.touchCount < 1 && !Input.GetKeyDown(KeyCode.Return) && !Input.GetKeyDown(KeyCode.Space))
+            yield return null;
+
         LoadNextLevel();
+        yield break;
     }
+
+    public Player Player {
+        get => _player;
+    }
+
+    Player _player;
 
     public void ReloadCurrentLevel(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
