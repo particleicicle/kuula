@@ -108,11 +108,12 @@ public class GameManager : MonoBehaviour
      bool IsTooGreenOrDark(Color color)
     {
         // Too green: green component much higher than red/blue
-        if (color.g > 0.6f && color.g > color.r + 0.2f && color.g > color.b + 0.2f)
+        if (color.g > Fractions.ThreeFifths && color.g > color.r + Fractions.OneFifth && color.g > color.b + Fractions.OneFifth)
             return true;
 
-         float luminance = 0.2126f * color.r + 0.7152f * color.g + 0.0722f * color.b;
-        if (luminance < 0.25f) // tweak threshold as needed
+
+        float luminance = 0.2126f * color.r + 0.7152f * color.g + 0.0722f * color.b;
+        if (luminance < Fractions.OneThird)
             return true;
 
         return false;
@@ -120,12 +121,12 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WaitForTouch(){
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds((float)Fractions.OneFifth);
         StringBuilder menuInput = new();
         while(Input.touchCount < 1)
         {
             menuInput.Append(Input.inputString);
-            
+
             if(menuInput.Length <= 0 && Input.GetKeyDown(KeyCode.Space))
                 break;
 

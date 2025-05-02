@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
 
         rb.bodyType = RigidbodyType2D.Static;
 
-        float shrinkTime = 0.6f;
+        float shrinkTime = (float)Fractions.ThreeFifths;
 
         float t = 0.0f;
         while(t <= shrinkTime){
