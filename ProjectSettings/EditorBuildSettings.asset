@@ -9,33 +9,34 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/level0.unity
+    path: Assets/Scenes/main.unity
     guid: 46777689327afe64bb305decc32c265b
   - enabled: 1
-    path: Assets/Scenes/level1.unity
+    path: Assets/Scenes/level0_1.unity
     guid: 9d9c6f0ae6e35a046846768da0f4120b
   - enabled: 1
-    path: Assets/Scenes/level2.unity
+    path: Assets/Scenes/level0_2.unity
     guid: f8db01c03bc6bcf44b923231b2e40fd1
   - enabled: 1
-    path: Assets/Scenes/level3.unity
+    path: Assets/Scenes/level0_3.unity
     guid: be49723dca30a7a43b17899c0bcf0af2
   - enabled: 1
-    path: Assets/Scenes/level4.unity
+    path: Assets/Scenes/level0_4.unity
     guid: 291a99c77c40e214e965999056fecf1f
   - enabled: 1
-    path: Assets/Scenes/level5.unity
+    path: Assets/Scenes/level0_5.unity
     guid: 7d619118d884e4c46b74635faa743a61
   - enabled: 1
-    path: Assets/Scenes/level6.unity
+    path: Assets/Scenes/level0_6.unity
     guid: c0d6e7061ef1ddb4587aaa93c53f9749
   - enabled: 1
-    path: Assets/Scenes/level7.unity
+    path: Assets/Scenes/level0_7.unity
     guid: 195ef22c423900b468e09e5834dcd059
   - enabled: 1
-    path: Assets/Scenes/level8.unity
+    path: Assets/Scenes/level0_8.unity
     guid: 817015e221664184fbf623c1193a5a74
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 938567e49b432a54ab46a980f896893b, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 41ac1bb55e09ee5428a9ef6cd06f5053, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 0266af94cb5e7694786d79bec2261e71, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

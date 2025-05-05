@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     
     public static readonly WaitForFixedUpdate FixedUpdateDelay = new ();
 
+    public LevelSetData levelSetData;
+
     private Renderer playerRenderer;
 
     GameObject gameOver;
@@ -36,7 +38,6 @@ public class GameManager : MonoBehaviour
         gameOver = Instantiate(gameOverPrefab);
         //Destroy(_player.gameObject);
     }
-
 
     void Awake(){
         if(_instance != null && _instance != this){
@@ -57,10 +58,10 @@ public class GameManager : MonoBehaviour
         SceneManager.activeSceneChanged += delegate(Scene _, Scene loadedScene) {
             StopAllCoroutines();
 
-            if(loadedScene.name == "level0")
-                StartCoroutine(WaitForTouch());
+            bool inMainMenu = loadedScene.buildIndex <= 0;
             
             playerOffscreenFor = 0;
+
             var playerGO = GameObject.FindGameObjectWithTag("Player");
             if(playerGO != null){
                 _player = playerGO.GetComponent<Player>();
@@ -80,11 +81,11 @@ public class GameManager : MonoBehaviour
 
             var bgRenderer = bg.GetComponent<Renderer>();
             bgRenderer.material.color = color;
-            if(loadedScene.buildIndex == 0)
+
+            if(inMainMenu)
                 StartCoroutine(MainMenuColorLoop(bgRenderer));
         };
     }
-
     private IEnumerator MainMenuColorLoop(Renderer _bgRenderer){
         Color color1 = _bgRenderer.material.color;
         Color color2;
@@ -96,7 +97,12 @@ public class GameManager : MonoBehaviour
 
             float startTime = Time.time;
             while(Time.time - startTime <= 2.0f) {
+
+                if(_bgRenderer == null)
+                    yield break;
+
                 _bgRenderer.material.color = Color.Lerp(color1, color2, (Time.time - startTime) / 2.0f);
+
                 yield return null;
             }
 
@@ -111,40 +117,11 @@ public class GameManager : MonoBehaviour
         if (color.g > Fractions.ThreeFifths && color.g > color.r + Fractions.OneFifth && color.g > color.b + Fractions.OneFifth)
             return true;
 
-
-        float luminance = 0.2126f * color.r + 0.7152f * color.g + 0.0722f * color.b;
-        if (luminance < Fractions.OneThird)
+        double luminance = (0.2126 * color.r) + (0.7152 * color.g) + (0.0722 * color.b);
+        if (luminance < Fractions.OneHalf)
             return true;
 
         return false;
-    }
-
-    private IEnumerator WaitForTouch(){
-
-        yield return new WaitForSeconds((float)Fractions.OneFifth);
-        StringBuilder menuInput = new();
-        while(Input.touchCount < 1)
-        {
-            menuInput.Append(Input.inputString);
-
-            if(menuInput.Length <= 0 && Input.GetKeyDown(KeyCode.Space))
-                break;
-
-            if(Input.GetKeyDown(KeyCode.Return)){
-                var str = menuInput.ToString().ToLower();
-                if(str.StartsWith("goto ")){
-                    SceneManager.LoadScene(str.Replace("goto ", string.Empty).Trim());
-                    yield break;
-                }
-                else
-                    break;
-            }
-                
-            yield return null;
-        }
-
-        LoadNextLevel(true);
-        yield break;
     }
 
     public Player Player {
@@ -154,15 +131,33 @@ public class GameManager : MonoBehaviour
     Player _player;
 
     public void LoadMainMenu()
-        => SceneManager.LoadScene("level0");
+        => SceneManager.LoadScene(0);
     public void ReloadCurrentLevel(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
     public void LoadNextLevel(bool async = false){
-        var levelNum = SceneManager.GetActiveScene().buildIndex + 1;
-        if(!async) SceneManager.LoadScene(levelNum);
-        else SceneManager.LoadSceneAsync(levelNum);
+
+        var currentSceneName = SceneManager.GetActiveScene().name;
+        var nextSceneName = currentSceneName;
+        
+        bool found = false;
+
+        foreach(var set in levelSetData.levelSets){
+            
+            for (int i = 0; i < set.levelSceneNames.Count; ++i){
+                if(set.levelSceneNames[i] == currentSceneName){
+                    nextSceneName = set.levelSceneNames[(i + 1) % set.levelSceneNames.Count];
+                    found = true;
+                    break;
+                }
+            }
+
+            if(found)
+                break;
+        }
+
+        if(!async) SceneManager.LoadScene(nextSceneName);
+        else SceneManager.LoadSceneAsync(nextSceneName);
     }
 
     private float playerOffscreenFor;

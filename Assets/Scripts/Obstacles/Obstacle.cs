@@ -4,7 +4,7 @@ public class Obstacle : MonoBehaviour
 {
     protected virtual void OnTriggerEnter2D(Collider2D other) {
         //Debug.Log("moi");
-        if(other.attachedRigidbody && other.attachedRigidbody.gameObject.layer == LayerMask.NameToLayer("Player")) {
+        if(other.attachedRigidbody != null && GameManager.Instance.Player != null && other.attachedRigidbody.gameObject == GameManager.Instance.Player.gameObject) {
 
             GameManager.Instance.Player.Die();
             return;

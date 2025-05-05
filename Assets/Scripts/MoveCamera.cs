@@ -22,9 +22,9 @@ public class MoveCamera : MonoBehaviour
     // Update is called once per frame
     private IEnumerator MoveCameraLoop(){
         var player = GameManager.Instance.Player;
-        if (player == null) yield break;
-
         while(true){
+            if (player == null) yield break;
+
             if (!Mathf.Approximately(player.PInput, 0.0f))
                 lastInput = player.PInput;
 

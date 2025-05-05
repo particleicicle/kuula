@@ -8,12 +8,16 @@ public class Player : MonoBehaviour
 
     public Vector3 position
     {
-        get => rb.position;
-        set => rb.MovePosition(value);
+        get => rb != null ? rb.position : Vector3.zero;
+        set {
+            if(rb != null){
+                rb.MovePosition(value);
+            }
+        }
     }
 
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         groundMask = Physics.DefaultRaycastLayers & ~(1 << LayerMask.NameToLayer("Player"));
