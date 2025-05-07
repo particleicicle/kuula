@@ -29,8 +29,6 @@ public class GameManager : MonoBehaviour
 
     public LevelSetData levelSetData;
 
-    private Renderer playerRenderer;
-
     GameObject gameOver;
     GameObject eventSystem;
 
@@ -59,16 +57,14 @@ public class GameManager : MonoBehaviour
             StopAllCoroutines();
 
             bool inMainMenu = loadedScene.buildIndex <= 0;
-            
-            playerOffscreenFor = 0;
+
 
             var playerGO = GameObject.FindGameObjectWithTag("Player");
             if(playerGO != null){
                 _player = playerGO.GetComponent<Player>();
-                playerRenderer = playerGO.GetComponent<Renderer>();
-
                 var camera = Camera.main;
-                camera.gameObject.AddComponent<MoveCamera>();            
+                if(camera.gameObject.GetComponent<MoveCamera>() == null)
+                    camera.gameObject.AddComponent<MoveCamera>();            
             }
 
             var bg = Instantiate(backgroundPrefab);
@@ -135,43 +131,32 @@ public class GameManager : MonoBehaviour
     public void ReloadCurrentLevel(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    public void LoadNextLevel(bool async = false){
+    
+    public void LoadNextLevel(bool async = false)
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
 
-        var currentSceneName = SceneManager.GetActiveScene().name;
-        var nextSceneName = currentSceneName;
-        
-        bool found = false;
-
-        foreach(var set in levelSetData.levelSets){
-            
-            for (int i = 0; i < set.levelSceneNames.Count; ++i){
-                if(set.levelSceneNames[i] == currentSceneName){
-                    nextSceneName = set.levelSceneNames[(i + 1) % set.levelSceneNames.Count];
-                    found = true;
-                    break;
-                }
+        foreach (var set in levelSetData.levelSets)
+        {
+            int index = set.levelSceneNames.IndexOf(currentScene);
+            if (index != -1)
+            {
+                string nextScene = set.levelSceneNames[(index + 1) % set.levelSceneNames.Count];
+                if (async)
+                    SceneManager.LoadSceneAsync(nextScene);
+                else
+                    SceneManager.LoadScene(nextScene);
+                return;
             }
-
-            if(found)
-                break;
         }
 
-        if(!async) SceneManager.LoadScene(nextSceneName);
-        else SceneManager.LoadSceneAsync(nextSceneName);
+        Debug.LogWarning("Current scene not found in any level set.");
     }
 
-    private float playerOffscreenFor;
+    const float DEATH_Y_THRESHOLD = -20.0f;
 
     private void LateUpdate(){
-        if(playerRenderer != null && !playerRenderer.isVisible)
-        {
-            playerOffscreenFor += Time.deltaTime;
-            if(playerOffscreenFor > 1.0f){
-                Player.Die();
-                playerOffscreenFor = -1000.0f;
-            }
-        }
-        else
-            playerOffscreenFor = 0;
+        if(Player != null && !Player.isDead && Player.position.y < DEATH_Y_THRESHOLD)
+            Player.Die();
     }
 }

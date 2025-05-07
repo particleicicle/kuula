@@ -290,7 +290,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -175, y: -50, z: -175, w: -50}
+  m_margin: {x: -165.53271, y: 75.95186, z: -165.74457, w: -164.84198}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -414,7 +414,7 @@ MonoBehaviour:
   columnSpacing: 450
   rowSpacing: 150
   startY: -125
-  maxRows: 3
+  columns: 3
 --- !u!1 &643600746
 GameObject:
   m_ObjectHideFlags: 0

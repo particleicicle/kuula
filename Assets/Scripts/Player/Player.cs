@@ -25,7 +25,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject deathEffect;
 
+    public bool isDead {get; private set;}
+
     public void Die(){
+        if(isDead)
+            return;
+            
+        isDead = true;
         deathEffect.transform.SetParent(null, true);
         deathEffect.SetActive(true);
         GameManager.Instance.GameOver();
@@ -52,6 +58,10 @@ public class Player : MonoBehaviour
     public float speed = 3f;
     public float counterTorque = 2f;
 
+    public float jumpForce = 5f;
+    private bool grounded;
+
+
 
     public float PInput{
         get => _input;
@@ -62,26 +72,38 @@ public class Player : MonoBehaviour
     [SerializeField]
     AudioSource rollingAudio;
 
+    public bool jump;
+
     void Update()
     {
+        // Ground check (raycast down)
+        grounded = Physics2D.Raycast(transform.position, Vector2.down, groundRayLength, groundMask);
+
         _input = GetInput();
 
         if (!Mathf.Approximately(_input, 0.0f)) {
             rb.AddTorque(_input * speed * Time.deltaTime);
-            // Opposite input: apply counter torque
+
             var signInput = Mathf.Sign(_input);
             var signVelo = Mathf.Sign(rb.angularVelocity);
-            //Debug.Log(new StringBuilder("Input Sign: ").Append(signInput).Append(" Velocity Sign: ").Append(signVelo).ToString());
-            if(signInput != signVelo) 
+            if (signInput != signVelo)
                 rb.AddTorque(-rb.angularVelocity * counterTorque * Time.deltaTime);
         }
         else {
-            // No input: apply counter torque
             rb.AddTorque(-rb.angularVelocity * counterTorque * Time.deltaTime);
         }
 
+
+
+
+        // Jump input
+        if (grounded && jump) { 
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+        
         UpdateRollingSound();
     }
+
 
     LayerMask groundMask;
 
@@ -91,11 +113,10 @@ public class Player : MonoBehaviour
 
     public float velocityDivider = 100.0f;
 
-    public float groundRayLength = 0.505f;
-
+    public float groundRayLength = 0.52f;
     void UpdateRollingSound(){
 
-        if(Mathf.Approximately(rb.angularVelocity, 0.0f) || !Physics2D.Raycast(transform.position, Vector2.down, groundRayLength, groundMask))
+        if(Mathf.Approximately(rb.angularVelocity, 0.0f) || !grounded)
         {
             rollingAudio.mute = true;
             return;
@@ -115,10 +136,17 @@ public class Player : MonoBehaviour
     float GetInput(){
         var _i = 0.0f;
 
+        jump = Input.GetButtonDown("Jump");
+
         if(Input.touchCount > 0){
             for(int i = 0; i < Input.touchCount; ++i){
                 var touch = Input.GetTouch(i);
+                
                 var pos = touch.rawPosition;
+
+                if(!jump && touch.phase == TouchPhase.Began && pos.x > Screen.width * Fractions.ThreeFifths && pos.y > Screen.height * Fractions.ThreeFifths)
+                    jump = true;
+                
                 //Debug.Log(pos);
                 _i += pos.x < Screen.width / 2 ? 1f : -1f;
             }

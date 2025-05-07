@@ -6,6 +6,7 @@ public class MoveCamera : MonoBehaviour
 
     public float horizontalOffset = 4.0f;
 
+    public bool restrictY = true;
     void Start(){
         OnEnable();
     }
@@ -25,6 +26,8 @@ public class MoveCamera : MonoBehaviour
         while(true){
             if (player == null) yield break;
 
+            //Debug.Log("moi");
+
             if (!Mathf.Approximately(player.PInput, 0.0f))
                 lastInput = player.PInput;
 
@@ -36,8 +39,14 @@ public class MoveCamera : MonoBehaviour
                 targetX += lastInput < 0.0f ? horizontalOffset : -horizontalOffset;
 
             cameraPos.x = Mathf.Lerp(cameraPos.x, targetX, 6 * Time.deltaTime);
-            transform.position = cameraPos;
 
+            if(!restrictY){
+                float targetY = playerPos.y;
+                cameraPos.y = Mathf.Lerp(cameraPos.y, targetY, 6 * Time.deltaTime);
+            }
+
+            transform.position = cameraPos;
+            
             yield return GameManager.FixedUpdateDelay; 
         }
     }
