@@ -67,58 +67,58 @@ public class GameManager : MonoBehaviour
                     camera.gameObject.AddComponent<MoveCamera>();            
             }
 
-            var bg = Instantiate(backgroundPrefab);
+            // var bg = Instantiate(backgroundPrefab);
 
-            Color color;
-            do {
-                color = new Color(Random.value, Random.value, Random.value);
-            }
-            while(IsTooGreenOrDark(color));
+            // Color color;
+            // do {
+            //     color = new Color(Random.value, Random.value, Random.value);
+            // }
+            // while(IsTooGreenOrDark(color));
 
-            var bgRenderer = bg.GetComponent<Renderer>();
-            bgRenderer.material.color = color;
+            // var bgRenderer = bg.GetComponent<Renderer>();
+            // bgRenderer.material.color = color;
 
-            if(inMainMenu)
-                StartCoroutine(MainMenuColorLoop(bgRenderer));
+            // if(inMainMenu)
+            //     StartCoroutine(MainMenuColorLoop(bgRenderer));
         };
     }
-    private IEnumerator MainMenuColorLoop(Renderer _bgRenderer){
-        Color color1 = _bgRenderer.material.color;
-        Color color2;
-        while(true) {
-            do {
-                color2 = new Color(Random.value, Random.value, Random.value);
-            }
-            while(IsTooGreenOrDark(color2));
+    // private IEnumerator MainMenuColorLoop(Renderer _bgRenderer){
+    //     Color color1 = _bgRenderer.material.color;
+    //     Color color2;
+    //     while(true) {
+    //         do {
+    //             color2 = new Color(Random.value, Random.value, Random.value);
+    //         }
+    //         while(IsTooGreenOrDark(color2));
 
-            float startTime = Time.time;
-            while(Time.time - startTime <= 2.0f) {
+    //         float startTime = Time.time;
+    //         while(Time.time - startTime <= 2.0f) {
 
-                if(_bgRenderer == null)
-                    yield break;
+    //             if(_bgRenderer == null)
+    //                 yield break;
 
-                _bgRenderer.material.color = Color.Lerp(color1, color2, (Time.time - startTime) / 2.0f);
+    //             _bgRenderer.material.color = Color.Lerp(color1, color2, (Time.time - startTime) / 2.0f);
 
-                yield return null;
-            }
+    //             yield return null;
+    //         }
 
-            color1 = color2;
-            _bgRenderer.material.color = color1;
-        }            
-    }   
+    //         color1 = color2;
+    //         _bgRenderer.material.color = color1;
+    //     }            
+    // }   
 
-     bool IsTooGreenOrDark(Color color)
-    {
-        // Too green: green component much higher than red/blue
-        if (color.g > Fractions.ThreeFifths && color.g > color.r + Fractions.OneFifth && color.g > color.b + Fractions.OneFifth)
-            return true;
+    //  bool IsTooGreenOrDark(Color color)
+    // {
+    //     // Too green: green component much higher than red/blue
+    //     if (color.g > Fractions.ThreeFifths && color.g > color.r + Fractions.OneFifth && color.g > color.b + Fractions.OneFifth)
+    //         return true;
 
-        double luminance = (0.2126 * color.r) + (0.7152 * color.g) + (0.0722 * color.b);
-        if (luminance < Fractions.OneHalf)
-            return true;
+    //     double luminance = (0.2126 * color.r) + (0.7152 * color.g) + (0.0722 * color.b);
+    //     if (luminance < Fractions.OneHalf)
+    //         return true;
 
-        return false;
-    }
+    //     return false;
+    // }
 
     public Player Player {
         get => _player;
