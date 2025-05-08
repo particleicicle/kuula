@@ -19,13 +19,6 @@ public class GameTimer : MonoBehaviour
     void UpdateTimerDisplay() {      
         if(timerText != null) {
             timerText.text = GameManager.Instance.enableTimer ? TimeString : string.Empty;
-
-                float time = elapsedTime;
-                int minutes = Mathf.FloorToInt(time / 60f);
-                int seconds = Mathf.FloorToInt(time % 60f);
-                int tenths = Mathf.FloorToInt((time * 10f) % 10f);
-
-                timerText.text = string.Format("{0:00}:{1:00}.{2}", minutes, seconds, tenths);
         }         
     }
 
@@ -33,18 +26,22 @@ public class GameTimer : MonoBehaviour
     {
         get 
         {
-            int minutes = Mathf.FloorToInt(elapsedTime / 60f);
-            int seconds = Mathf.FloorToInt(elapsedTime % 60f);
-            return string.Format("{0:00}:{1:00}", minutes, seconds);
+            float time = elapsedTime;
+            int minutes = Mathf.FloorToInt(time / 60f);
+            int seconds = Mathf.FloorToInt(time % 60f);
+            int tenths = Mathf.FloorToInt((time * 10f) % 10f);
+
+            return string.Format("{0:00}:{1:00}.{2}", minutes, seconds, tenths);
         }
     }
 
     // Call this when the game ends
-    public void StopTimer()
+    public void StopTimer(bool addRecord = true)
     {
         isRunning = false;
         Debug.Log("Total Time: " + elapsedTime + " seconds");
-        GameManager.Instance.levelCompletionTimes.Add(TimeString);
+        if(addRecord)
+            GameManager.Instance.levelCompletionTimes.Add(TimeString);
     }
 
     public float GetElapsedTime()

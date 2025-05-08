@@ -133,10 +133,23 @@ public class GameManager : MonoBehaviour
 
     Player _player;
 
+    void DisplayLoading(){
+        if(gameOver != null) {
+            Destroy(gameOver);
+        }
+
+        Instantiate(loadingPrefab);
+    }
+
     public void LoadMainMenu()
-        => SceneManager.LoadScene(0);
+    {
+        DisplayLoading();
+        SceneManager.LoadSceneAsync(0);
+    }
     public void ReloadCurrentLevel(){
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        DisplayLoading();
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
     }
 
     string _currentLevelSetName;
@@ -144,9 +157,20 @@ public class GameManager : MonoBehaviour
     {
         get => _currentLevelSetName;
     }
+
+    [SerializeField]
+    private GameObject loadingPrefab;
+
+    public void StopTimer(bool addRecord = true) {
+        var timer = FindAnyObjectByType<GameTimer>();
+        if(timer != null)
+            timer.StopTimer(addRecord);
+    }
     
-    public void LoadNextLevel(bool async = false)
+    public void LoadNextLevel()
     {
+        DisplayLoading();
+
         string currentScene = SceneManager.GetActiveScene().name;
 
         foreach (var set in levelSetData.levelSets)
@@ -157,10 +181,7 @@ public class GameManager : MonoBehaviour
                 _currentLevelSetName = set.name;
                 int nextIndex = index + 1;
                 string nextScene = nextIndex >= set.levelSceneNames.Count ? "victory" : set.levelSceneNames[nextIndex % set.levelSceneNames.Count];
-                if (async)
-                    SceneManager.LoadSceneAsync(nextScene);
-                else
-                    SceneManager.LoadScene(nextScene);
+                SceneManager.LoadSceneAsync(nextScene);
                 return;
             }
         }

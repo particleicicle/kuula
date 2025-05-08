@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     public void Die(){
         if(isDead)
             return;
+
+        GameManager.Instance.StopTimer(false);
             
         isDead = true;
         deathEffect.transform.SetParent(null, true);
