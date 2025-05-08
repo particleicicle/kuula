@@ -53,8 +53,7 @@ public class GenerateLevelSelect : MonoBehaviour
             int middleCol = actualColumns / 2;
             float xOffset = (col - middleCol) * columnSpacing;
 
-            if (actualColumns % 2 == 0)
-            {
+            if (actualColumns % 2 == 0) {
                 xOffset += columnSpacing / 2f;
             }
 

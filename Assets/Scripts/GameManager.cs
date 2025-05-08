@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
@@ -24,6 +22,8 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+
+    public bool enableTimer = true;
     
     public static readonly WaitForFixedUpdate FixedUpdateDelay = new ();
 
@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     GameObject gameOver;
     GameObject eventSystem;
+
+    public readonly List<string> levelCompletionTimes = new ();
 
     public void GameOver(){
         gameOver = Instantiate(gameOverPrefab);
@@ -57,6 +59,11 @@ public class GameManager : MonoBehaviour
             StopAllCoroutines();
 
             bool inMainMenu = loadedScene.buildIndex <= 0;
+
+            if(inMainMenu){
+                _currentLevelSetName = string.Empty;
+                levelCompletionTimes.Clear();
+            }
 
 
             var playerGO = GameObject.FindGameObjectWithTag("Player");
@@ -131,6 +138,12 @@ public class GameManager : MonoBehaviour
     public void ReloadCurrentLevel(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    string _currentLevelSetName;
+    public string CurrentLevelSetName 
+    {
+        get => _currentLevelSetName;
+    }
     
     public void LoadNextLevel(bool async = false)
     {
@@ -141,7 +154,9 @@ public class GameManager : MonoBehaviour
             int index = set.levelSceneNames.IndexOf(currentScene);
             if (index != -1)
             {
-                string nextScene = set.levelSceneNames[(index + 1) % set.levelSceneNames.Count];
+                _currentLevelSetName = set.name;
+                int nextIndex = index + 1;
+                string nextScene = nextIndex >= set.levelSceneNames.Count ? "victory" : set.levelSceneNames[nextIndex % set.levelSceneNames.Count];
                 if (async)
                     SceneManager.LoadSceneAsync(nextScene);
                 else

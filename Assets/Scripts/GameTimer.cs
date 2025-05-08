@@ -10,18 +10,26 @@ public class GameTimer : MonoBehaviour
 
     void Update()
     {
-        if (isRunning)
-        {
+        if (isRunning) {
             elapsedTime += Time.deltaTime;
             UpdateTimerDisplay();
         }
     }
 
-    void UpdateTimerDisplay()
+    void UpdateTimerDisplay() {      
+        if(timerText != null) {
+            timerText.text = GameManager.Instance.enableTimer ? TimeString : string.Empty;
+        }         
+    }
+
+    string TimeString
     {
-        int minutes = Mathf.FloorToInt(elapsedTime / 60f);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60f);
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        get 
+        {
+            int minutes = Mathf.FloorToInt(elapsedTime / 60f);
+            int seconds = Mathf.FloorToInt(elapsedTime % 60f);
+            return string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
     }
 
     // Call this when the game ends
@@ -29,6 +37,7 @@ public class GameTimer : MonoBehaviour
     {
         isRunning = false;
         Debug.Log("Total Time: " + elapsedTime + " seconds");
+        GameManager.Instance.levelCompletionTimes.Add(TimeString);
     }
 
     public float GetElapsedTime()

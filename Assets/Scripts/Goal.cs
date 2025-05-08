@@ -6,6 +6,9 @@ public class Goal : MonoBehaviour
        
         if(other.attachedRigidbody && other.attachedRigidbody.gameObject.layer == LayerMask.NameToLayer("Player")) {
             GameManager.Instance.LoadNextLevel();
+            var timer = FindAnyObjectByType<GameTimer>();
+            if(timer != null)
+                timer.StopTimer();
         }
     }
 }
