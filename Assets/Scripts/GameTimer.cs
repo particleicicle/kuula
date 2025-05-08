@@ -19,6 +19,13 @@ public class GameTimer : MonoBehaviour
     void UpdateTimerDisplay() {      
         if(timerText != null) {
             timerText.text = GameManager.Instance.enableTimer ? TimeString : string.Empty;
+
+                float time = elapsedTime;
+                int minutes = Mathf.FloorToInt(time / 60f);
+                int seconds = Mathf.FloorToInt(time % 60f);
+                int tenths = Mathf.FloorToInt((time * 10f) % 10f);
+
+                timerText.text = string.Format("{0:00}:{1:00}.{2}", minutes, seconds, tenths);
         }         
     }
 
