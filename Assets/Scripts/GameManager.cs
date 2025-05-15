@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     public readonly List<string> levelCompletionTimes = new ();
 
+
     public void GameOver(){
         gameOver = Instantiate(gameOverPrefab);
         //Destroy(_player.gameObject);
@@ -50,8 +52,14 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         if(!eventSystem){
-            eventSystem = Instantiate(eventSystemPrefab);
-            DontDestroyOnLoad(eventSystem);
+            var eS = FindAnyObjectByType<EventSystem>();
+            if(eS != null) {
+                eventSystem = eS.gameObject;
+            }
+            else{
+                eventSystem = Instantiate(eventSystemPrefab);
+                DontDestroyOnLoad(eventSystem);
+            }         
         }
         
 
@@ -133,7 +141,7 @@ public class GameManager : MonoBehaviour
 
     Player _player;
 
-    void DisplayLoading(){
+    public void DisplayLoading(){
         if(gameOver != null) {
             Destroy(gameOver);
         }

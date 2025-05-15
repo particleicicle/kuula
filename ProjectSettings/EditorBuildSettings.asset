@@ -47,6 +47,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/victory.unity
     guid: 62c3da5dbaf47f142bd6a05b9b6ad32e
+  - enabled: 1
+    path: Assets/Scenes/level2_2.unity
+    guid: 33d3bd3894e447847a03dc284aeeceb8
+  - enabled: 1
+    path: Assets/Scenes/level2_3.unity
+    guid: aa9a827f2db64bd449f7c1fa2fa04ae4
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 938567e49b432a54ab46a980f896893b, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 41ac1bb55e09ee5428a9ef6cd06f5053, type: 2}

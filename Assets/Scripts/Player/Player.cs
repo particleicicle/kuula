@@ -6,13 +6,23 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
 
 
-    public Vector3 position
+    public Vector2 position
     {
-        get => rb != null ? rb.position : Vector3.zero;
+        get => rb != null ? rb.position : Vector2.zero;
         set {
             if(rb != null){
                 rb.MovePosition(value);
             }
+        }
+    }
+
+    
+    public Vector2 MoveDir {
+        get {
+            if(rb != null) 
+                return rb.linearVelocity.normalized;
+
+            return Vector2.zero;
         }
     }
 
@@ -34,9 +44,12 @@ public class Player : MonoBehaviour
         GameManager.Instance.StopTimer(false);
             
         isDead = true;
+
         deathEffect.transform.SetParent(null, true);
         deathEffect.SetActive(true);
+
         GameManager.Instance.GameOver();
+
         StartCoroutine(Shrink());
     }
 
@@ -60,9 +73,7 @@ public class Player : MonoBehaviour
     public float speed = 3f;
     public float counterTorque = 2f;
 
-    public float jumpForce = 5f;
-    private bool grounded;
-
+    public float jumpForce = 6f;
 
 
     public float PInput{
@@ -76,12 +87,53 @@ public class Player : MonoBehaviour
 
     public bool jump;
 
+    [SerializeField] private int groundRayCount = 5;
+    [SerializeField] private float radius = 0.5f;
+
+    bool IsGrounded()
+    {
+        Vector2 origin = transform.position;
+
+        // Cast rays in an arc across the bottom hemisphere
+        for (int i = 0; i < groundRayCount; i++)
+        {
+            // -45° to +45° in radians
+            float angle = Mathf.Lerp(-45f, 45f, i / (float)(groundRayCount - 1)) * Mathf.Deg2Rad;
+
+            // Direction from center toward edge of lower hemisphere
+            Vector2 dir = new (Mathf.Sin(angle), -Mathf.Cos(angle)); // Points down and slightly out
+            Vector2 start = origin + dir * (radius - 0.01f); // Just inside collider edge
+
+            if (Physics2D.Raycast(start, dir, groundRayLength, groundMask))
+            {
+                return true;
+            }
+
+            // Debug visualization
+            Debug.DrawRay(start, dir * groundRayLength, Color.green);
+        }
+
+        return false;
+    }
+
+
     void Update()
     {
-        // Ground check (raycast down)
-        grounded = Physics2D.Raycast(transform.position, Vector2.down, groundRayLength, groundMask);
-
         _input = GetInput();
+    }
+
+    [SerializeField] private float coyoteTime = 0.2f; // How long after leaving ground a jump is still allowed
+    [SerializeField] private float jumpCooldown = 0.2f; // How much time must pass between jumps
+
+    private float coyoteTimer = 0f;
+    private float lastJumpTime = float.NegativeInfinity;
+
+
+    void FixedUpdate()
+    {
+        
+
+        // Ground check (raycast down)
 
         if (!Mathf.Approximately(_input, 0.0f)) {
             rb.AddTorque(_input * speed * Time.deltaTime);
@@ -95,15 +147,28 @@ public class Player : MonoBehaviour
             rb.AddTorque(-rb.angularVelocity * counterTorque * Time.deltaTime);
         }
 
+        jump = Input.GetButton("Jump");
 
-
+        bool grounded = IsGrounded();
 
         // Jump input
-        if (grounded && jump) { 
+        // Update coyote timer
+        coyoteTimer = grounded ? coyoteTime : Mathf.Clamp(coyoteTimer - Time.deltaTime, 0.0f, float.MaxValue);
+
+
+        // Jump logic with coyote time and cooldown
+        if (jump && coyoteTimer >= Mathf.Epsilon && (Time.time - lastJumpTime > jumpCooldown))
+        {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            lastJumpTime = Time.time;
+            coyoteTimer = 0f; // prevent double-jump during buffer
         }
+        else if(jump)
+            Debug.Log("Grounded: " + grounded);
+
+        jump = false;
         
-        UpdateRollingSound();
+        UpdateRollingSound(!grounded);
     }
 
 
@@ -115,10 +180,10 @@ public class Player : MonoBehaviour
 
     public float velocityDivider = 100.0f;
 
-    public float groundRayLength = 0.52f;
-    void UpdateRollingSound(){
+    public float groundRayLength = 0.05f;
+    void UpdateRollingSound(bool mute){
 
-        if(Mathf.Approximately(rb.angularVelocity, 0.0f) || !grounded)
+        if(Mathf.Approximately(rb.angularVelocity, 0.0f) || mute)
         {
             rollingAudio.mute = true;
             return;
@@ -135,10 +200,25 @@ public class Player : MonoBehaviour
         rollingAudio.mute = false;
     }
 
+    float resetCounter;
+
     float GetInput(){
         var _i = 0.0f;
 
-        jump = Input.GetButtonDown("Jump");
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            resetCounter += Time.deltaTime;
+            if(resetCounter > 2.0f) {
+                resetCounter = 0.0f;
+                GameManager.Instance.ReloadCurrentLevel();
+                return 0.0f;
+            }
+        }
+        else
+            resetCounter = 0.0f;
+
+            
+        jump = Input.GetButton("Jump"); 
 
         if(Input.touchCount > 0){
             for(int i = 0; i < Input.touchCount; ++i){

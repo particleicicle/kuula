@@ -22,9 +22,9 @@ public class LoadingScreen : MonoBehaviour
     bool onEnableCalled;
     void OnEnable()
     {
-        onEnableCalled = true;
         StopAllCoroutines();
         StartCoroutine(LoadingTextLoop());
+        onEnableCalled = true;
     }
 
     void OnDisable()
@@ -33,10 +33,10 @@ public class LoadingScreen : MonoBehaviour
         onEnableCalled = false;
     }
 
-
+    public float changeDelay = (float)Fractions.OneThird;
     IEnumerator LoadingTextLoop(){
         int index = 0;
-        WaitForSeconds delay = new(1.0f);
+        WaitForSeconds delay = new(changeDelay);
         while(true) {
             textMesh.text = loadingTexts[index++];
             index %= loadingTexts.Length;

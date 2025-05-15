@@ -4,7 +4,7 @@ public class MoveCamera : MonoBehaviour
 {
     float lastInput;
 
-    public float horizontalOffset = 4.0f;
+    public Vector2 offset = new(4.0f, 2.0f);
 
     public bool restrictY = true;
     void Start(){
@@ -36,12 +36,14 @@ public class MoveCamera : MonoBehaviour
 
             float targetX =  playerPos.x;
             if(!Mathf.Approximately(lastInput, 0.0f))
-                targetX += lastInput < 0.0f ? horizontalOffset : -horizontalOffset;
+                targetX += lastInput < 0.0f ? offset.x : -offset.x;
 
             cameraPos.x = Mathf.Lerp(cameraPos.x, targetX, 6 * Time.deltaTime);
 
             if(!restrictY){
                 float targetY = playerPos.y;
+                if(player.MoveDir.y < -0.1f)
+                    targetY -= offset.y;
                 cameraPos.y = Mathf.Lerp(cameraPos.y, targetY, 6 * Time.deltaTime);
             }
 

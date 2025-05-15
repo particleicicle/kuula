@@ -64,7 +64,8 @@ public class GenerateLevelSelect : MonoBehaviour
             var buttonMono = button.GetComponent<Button>();
             buttonMono.onClick.AddListener(() =>
             {
-                SceneManager.LoadScene(firstLevel);
+                GameManager.Instance.DisplayLoading();
+                SceneManager.LoadSceneAsync(firstLevel, LoadSceneMode.Single);
             });
         }
     }

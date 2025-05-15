@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelSetData
   m_EditorClassIdentifier: 
   levelSets:
-  - _name: Jotain
+  - _name: 
     setNumber: 0
     levelSceneNames:
     - level0_1
@@ -24,15 +24,17 @@ MonoBehaviour:
     - level0_6
     - level0_7
     - level0_8
-  - _name: Set 1
+  - _name: 
     setNumber: 1
     levelSceneNames:
     - level1_1
-  - _name: Set 2
+  - _name: 
     setNumber: 2
     levelSceneNames:
     - level2_1
-  - _name: Set 3
+    - level2_2
+    - level2_3
+  - _name: 
     setNumber: 3
     levelSceneNames:
     - level3_1

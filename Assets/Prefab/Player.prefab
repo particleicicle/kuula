@@ -5164,9 +5164,15 @@ MonoBehaviour:
   deathEffect: {fileID: 139905393620745654}
   speed: 250
   counterTorque: 2
+  jumpForce: 6
   rollingAudio: {fileID: 8898141277551233119}
+  jump: 0
+  groundRayCount: 5
+  radius: 0.5
+  coyoteTime: 0.2
+  jumpCooldown: 0.2
   maxVolume: 1
   maxPitch: 2
   minPitch: 0.5
   velocityDivider: 3000
-  groundRayLength: 0.55
+  groundRayLength: 0.05
