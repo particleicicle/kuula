@@ -85,7 +85,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     AudioSource rollingAudio;
 
-    public bool jump;
+    bool jumpPressed;
+
+    bool jumped;
 
     [SerializeField] private int groundRayCount = 5;
     [SerializeField] private float radius = 0.5f;
@@ -128,12 +130,12 @@ public class Player : MonoBehaviour
     private float coyoteTimer = 0f;
     private float lastJumpTime = float.NegativeInfinity;
 
+    bool grounded;
 
     void FixedUpdate()
     {
         
 
-        // Ground check (raycast down)
 
         if (!Mathf.Approximately(_input, 0.0f)) {
             rb.AddTorque(_input * speed * Time.deltaTime);
@@ -147,9 +149,8 @@ public class Player : MonoBehaviour
             rb.AddTorque(-rb.angularVelocity * counterTorque * Time.deltaTime);
         }
 
-        jump = Input.GetButton("Jump");
-
-        bool grounded = IsGrounded();
+        // Ground check
+        grounded = IsGrounded();
 
         // Jump input
         // Update coyote timer
@@ -157,17 +158,14 @@ public class Player : MonoBehaviour
 
 
         // Jump logic with coyote time and cooldown
-        if (jump && coyoteTimer >= Mathf.Epsilon && (Time.time - lastJumpTime > jumpCooldown))
+        if (jumpPressed && coyoteTimer >= Mathf.Epsilon && (Time.time - lastJumpTime > jumpCooldown))
         {
+            jumped = true;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             lastJumpTime = Time.time;
             coyoteTimer = 0f; // prevent double-jump during buffer
         }
-        else if(jump)
-            Debug.Log("Grounded: " + grounded);
 
-        jump = false;
-        
         UpdateRollingSound(!grounded);
     }
 
@@ -218,20 +216,24 @@ public class Player : MonoBehaviour
             resetCounter = 0.0f;
 
             
-        jump = Input.GetButton("Jump"); 
+        if(!jumpPressed){
+            jumpPressed = Input.GetButton("Jump") && grounded && !jumped;
+        }
+        else if(jumped){
+            jumpPressed = false;
+            jumped = false;
+        }
 
-        if(Input.touchCount > 0){
-            for(int i = 0; i < Input.touchCount; ++i){
-                var touch = Input.GetTouch(i);
-                
-                var pos = touch.rawPosition;
+        for(int i = 0; i < Input.touchCount; ++i){
+            var touch = Input.GetTouch(i);
+            
+            var pos = touch.rawPosition;
 
-                if(!jump && touch.phase == TouchPhase.Began && pos.x > Screen.width * Fractions.ThreeFifths && pos.y > Screen.height * Fractions.ThreeFifths)
-                    jump = true;
-                
-                //Debug.Log(pos);
-                _i += pos.x < Screen.width / 2 ? 1f : -1f;
-            }
+            if(!jumpPressed && touch.phase == TouchPhase.Began && pos.x > Screen.width * Fractions.ThreeFifths && pos.y > Screen.height * Fractions.ThreeFifths)
+                jumpPressed = true;
+            
+            //Debug.Log(pos);
+            _i += pos.x < Screen.width / 2 ? 1f : -1f;
         }
 
         _i += -Input.GetAxisRaw("Horizontal"); // get input (-1, 0, or 1)

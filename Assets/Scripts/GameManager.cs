@@ -51,16 +51,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        if(!eventSystem){
-            var eS = FindAnyObjectByType<EventSystem>();
-            if(eS != null) {
-                eventSystem = eS.gameObject;
-            }
-            else{
-                eventSystem = Instantiate(eventSystemPrefab);
-                DontDestroyOnLoad(eventSystem);
-            }         
-        }
+
         
 
         SceneManager.activeSceneChanged += delegate(Scene _, Scene loadedScene) {
@@ -80,6 +71,20 @@ public class GameManager : MonoBehaviour
                 var camera = Camera.main;
                 if(camera.gameObject.GetComponent<MoveCamera>() == null)
                     camera.gameObject.AddComponent<MoveCamera>();            
+            }
+
+            if(!eventSystem){
+                var eS = FindAnyObjectByType<EventSystem>();
+                if(eS != null) {
+                    eventSystem = eS.gameObject;
+                }
+                else{
+                    eventSystem = Instantiate(eventSystemPrefab);
+                    DontDestroyOnLoad(eventSystem);
+                }         
+            }
+            else if(FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length > 1){
+                Destroy(eventSystem);
             }
 
             // var bg = Instantiate(backgroundPrefab);
