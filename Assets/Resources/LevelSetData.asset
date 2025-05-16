@@ -28,13 +28,11 @@ MonoBehaviour:
     setNumber: 1
     levelSceneNames:
     - level1_1
-  - _name: 
-    setNumber: 2
-    levelSceneNames:
-    - level2_1
-    - level2_2
-    - level2_3
+    - level1_2
   - _name: 
     setNumber: 3
     levelSceneNames:
     - level3_1
+    - level3_1
+    - level3_2
+    - level3_3
