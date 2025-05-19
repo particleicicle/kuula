@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
                 var eventSystems = FindObjectsByType<EventSystem>(FindObjectsSortMode.None);
                 if(eventSystems.Length > 1)
                 {
-                    for(int i = eventSystems.Length; i >= 1; i--)
+                    for(int i = eventSystems.Length - 1; i >= 1; i--)
                         Destroy(eventSystems[i]);
                 }
                 eventSystem = eventSystems[0].gameObject;
