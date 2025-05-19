@@ -478,8 +478,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path:
-  - {x: -16, y: 5}
-  - {x: -20, y: 5}
+  - {x: -16, y: 5.88}
+  - {x: -20, y: 5.88}
   moveSpeed: 4
 --- !u!50 &484744110
 Rigidbody2D:
