@@ -33,6 +33,5 @@ MonoBehaviour:
     setNumber: 3
     levelSceneNames:
     - level3_1
-    - level3_1
     - level3_2
     - level3_3

@@ -75,16 +75,20 @@ public class GameManager : MonoBehaviour
 
             if(!eventSystem){
                 var eS = FindAnyObjectByType<EventSystem>();
-                if(eS != null) {
+                if(eS != null)
                     eventSystem = eS.gameObject;
-                }
-                else{
-                    eventSystem = Instantiate(eventSystemPrefab);
-                    DontDestroyOnLoad(eventSystem);
-                }         
+                else
+                    eventSystem = Instantiate(eventSystemPrefab);  
+                DontDestroyOnLoad(eventSystem);
             }
-            else if(FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length > 1){
-                Destroy(eventSystem);
+            else{
+                var eventSystems = FindObjectsByType<EventSystem>(FindObjectsSortMode.None);
+                if(eventSystems.Length > 1)
+                {
+                    for(int i = eventSystems.Length; i >= 1; i--)
+                        Destroy(eventSystems[i]);
+                }
+                eventSystem = eventSystems[0].gameObject;
             }
 
             // var bg = Instantiate(backgroundPrefab);

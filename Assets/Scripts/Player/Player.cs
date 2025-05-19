@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
 
     private float coyoteTimer = 0f;
     private float lastJumpTime = float.NegativeInfinity;
-
+        
     bool grounded;
 
     void FixedUpdate()
