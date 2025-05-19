@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Linq;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
@@ -82,13 +83,13 @@ public class GameManager : MonoBehaviour
                 DontDestroyOnLoad(eventSystem);
             }
             else{
-                var eventSystems = FindObjectsByType<EventSystem>(FindObjectsSortMode.None);
+                var eventSystems = FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Select(x => x.gameObject).ToArray();
                 if(eventSystems.Length > 1)
                 {
                     for(int i = eventSystems.Length - 1; i >= 1; i--)
                         Destroy(eventSystems[i]);
                 }
-                eventSystem = eventSystems[0].gameObject;
+                eventSystem = eventSystems[0];
             }
 
             // var bg = Instantiate(backgroundPrefab);
