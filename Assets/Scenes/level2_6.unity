@@ -10870,7 +10870,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path:
   - {x: 14.5, y: -6}
-  - {x: 14.5, y: 1}
+  - {x: 14.5, y: 2}
+  - {x: 14.5, y: -6}
   moveSpeed: 2
 --- !u!61 &1460832735
 BoxCollider2D:
@@ -11417,8 +11418,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path:
-  - {x: 1.5, y: -6.5}
   - {x: 1.5, y: -3.5}
+  - {x: 1.5, y: -6.5}
   moveSpeed: 2
 --- !u!50 &2112769095
 Rigidbody2D:
@@ -11557,7 +11558,7 @@ Transform:
   m_GameObject: {fileID: 2112769093}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: -6.5, z: 0}
+  m_LocalPosition: {x: 1.5, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
