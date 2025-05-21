@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
                     camera.gameObject.AddComponent<MoveCamera>();            
             }
 
-            if(!eventSystem){
+            if(!eventSystem) {
                 var eS = FindAnyObjectByType<EventSystem>();
                 if(eS != null)
                     eventSystem = eS.gameObject;
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
                     eventSystem = Instantiate(eventSystemPrefab);  
                 DontDestroyOnLoad(eventSystem);
             }
-            else{
+            else {
                 var eventSystems = FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Select(x => x.gameObject).ToArray();
                 if(eventSystems.Length > 1)
                 {

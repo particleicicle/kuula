@@ -37,12 +37,16 @@ public class Player : MonoBehaviour
 
     public bool isDead {get; private set;}
 
-    public void Die(){
-        if(isDead)
+    public float midairMovementForce = 200.0f;
+    public float midairCounterMovementForce = 800.0f;
+
+    public void Die()
+    {
+        if (isDead)
             return;
 
         GameManager.Instance.StopTimer(false);
-            
+
         isDead = true;
 
         deathEffect.transform.SetParent(null, true);
@@ -71,7 +75,7 @@ public class Player : MonoBehaviour
     }
 
     public float speed = 3f;
-    public float counterTorque = 2f;
+    public float counterTorque = 5f;
 
     public float jumpForce = 6f;
 
@@ -134,15 +138,12 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        var signInput = Mathf.Sign(_input);
         
-
 
         if (!Mathf.Approximately(_input, 0.0f)) {
             rb.AddTorque(_input * speed * Time.deltaTime);
-
-            var signInput = Mathf.Sign(_input);
-            var signVelo = Mathf.Sign(rb.angularVelocity);
-            if (signInput != signVelo)
+            if (signInput != Mathf.Sign(rb.angularVelocity))
                 rb.AddTorque(-rb.angularVelocity * counterTorque * Time.deltaTime);
         }
         else {
@@ -151,6 +152,10 @@ public class Player : MonoBehaviour
 
         // Ground check
         grounded = IsGrounded();
+
+        if (!grounded) {
+            rb.AddForce(_input * (signInput != Mathf.Sign(-rb.linearVelocityX) ? midairCounterMovementForce : midairMovementForce) * Time.deltaTime * Vector2.left);
+        }
 
         // Jump input
         // Update coyote timer
