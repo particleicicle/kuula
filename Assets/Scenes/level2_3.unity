@@ -5304,7 +5304,7 @@ MonoBehaviour:
   path:
   - {x: -4, y: -8.125}
   - {x: -4, y: 8.125}
-  moveSpeed: 6
+  moveSpeed: 3
 --- !u!1001 &1926426260
 PrefabInstance:
   m_ObjectHideFlags: 0
