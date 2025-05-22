@@ -5164,7 +5164,7 @@ MonoBehaviour:
   deathEffect: {fileID: 139905393620745654}
   midairMovementForce: 200
   midairCounterMovementForce: 800
-  speed: 250
+  speed: 200
   counterTorque: 2
   jumpForce: 6
   rollingAudio: {fileID: 8898141277551233119}
