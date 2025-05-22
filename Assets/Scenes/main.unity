@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverPrefab: {fileID: 6612548017434740664, guid: e86abb8a538098047844e1b0c3dee633, type: 3}
+  eventSystemPrefab: {fileID: 7801775758018226239, guid: 91013f88e02f16f4e82fc0d61fda2e6f, type: 3}
   backgroundPrefab: {fileID: 9085832052168699082, guid: ed115c298ebbe7b409df73c74fc778da, type: 3}
   enableTimer: 1
   levelSetData: {fileID: 11400000, guid: 07f143f22f29d094bb6ab68b19b883a6, type: 2}
