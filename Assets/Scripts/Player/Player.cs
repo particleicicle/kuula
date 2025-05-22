@@ -163,7 +163,7 @@ public class Player : MonoBehaviour
 
 
         // Jump logic with coyote time and cooldown
-        if (jumpPressed && coyoteTimer >= Mathf.Epsilon && (Time.time - lastJumpTime > jumpCooldown))
+        if (jumpPressed && !jumped && coyoteTimer >= Mathf.Epsilon && (Time.time - lastJumpTime > jumpCooldown))
         {
             jumped = true;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -224,7 +224,7 @@ public class Player : MonoBehaviour
         if(!jumpPressed){
             jumpPressed = Input.GetButton("Jump") && grounded && !jumped;
         }
-        else if(jumped){
+        else if(jumped && !Input.GetButton("Jump")){
             jumpPressed = false;
             jumped = false;
         }
