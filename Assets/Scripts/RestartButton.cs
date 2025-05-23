@@ -48,5 +48,8 @@ public class RestartButton : MonoBehaviour
     }
 
     void SetText()
-        => text.text = textStages[confirm];
+    {
+        if (text != null && textStages != null && textStages.Length > 0)
+            text.text = textStages[confirm % textStages.Length];
+    }
 }
