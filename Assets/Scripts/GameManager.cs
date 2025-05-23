@@ -18,16 +18,23 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance
     {
         get {
-            if(_instance == null)
+            /*
+            if (_instance == null)
                 return new GameObject("GameManager").AddComponent<GameManager>();
-            
+            */
             return _instance;
         }
     }
 
-    public bool enableTimer = true;
-    
-    public static readonly WaitForFixedUpdate FixedUpdateDelay = new ();
+    bool enableTimer = true;
+
+    public bool TimerEnabled
+        => enableTimer;
+
+    public void ToggleTimer(UnityEngine.UI.Toggle _toggle)
+        => enableTimer = _toggle.isOn;
+
+    public static readonly WaitForFixedUpdate FixedUpdateDelay = new();
 
     public LevelSetData levelSetData;
 

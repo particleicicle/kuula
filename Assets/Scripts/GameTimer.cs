@@ -18,7 +18,7 @@ public class GameTimer : MonoBehaviour
 
     void UpdateTimerDisplay() {      
         if(timerText != null) {
-            timerText.text = GameManager.Instance.enableTimer ? TimeString : string.Empty;
+            timerText.text = GameManager.Instance.TimerEnabled ? TimeString : string.Empty;
         }         
     }
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelSetData
   m_EditorClassIdentifier: 
   levelSets:
-  - _name: Set 0
+  - _name: Helppo
     setNumber: 0
     levelSceneNames:
     - level0_1
@@ -22,7 +22,7 @@ MonoBehaviour:
     - level0_4
     - level0_5
     - level0_6
-  - _name: Set 1
+  - _name: Keskitaso
     setNumber: 1
     levelSceneNames:
     - level1_1
@@ -31,7 +31,7 @@ MonoBehaviour:
     - level1_4
     - level1_5
     - level1_6
-  - _name: Set 2
+  - _name: Vaikea
     setNumber: 2
     levelSceneNames:
     - level2_1

@@ -17,7 +17,7 @@ public class VictoryScreen : MonoBehaviour
     {
         levelSetName.text = string.Format(levelSetName.text, GameManager.Instance.CurrentLevelSetName);
 
-        if(!GameManager.Instance.enableTimer)
+        if(!GameManager.Instance.TimerEnabled)
             return;
 
         List<string> times = GameManager.Instance.levelCompletionTimes;
