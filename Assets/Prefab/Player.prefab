@@ -5147,7 +5147,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &7716484786006366442
 MonoBehaviour:
@@ -5174,6 +5174,9 @@ MonoBehaviour:
   jumpCooldown: 0.2
   wallCheckDistance: 0.05
   wallMask:
+    serializedVersion: 2
+    m_Bits: 0
+  groundMask:
     serializedVersion: 2
     m_Bits: 0
   maxVolume: 1
