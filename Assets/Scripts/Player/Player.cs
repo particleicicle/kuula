@@ -114,9 +114,7 @@ public class Player : MonoBehaviour
             Vector2 start = origin + dir * (radius - 0.01f); // Just inside collider edge
 
             if (Physics2D.Raycast(start, dir, groundRayLength, groundMask))
-            {
-                return true;
-            }
+                return true;         
 
             // Debug visualization
             Debug.DrawRay(start, dir * groundRayLength, Color.green);
