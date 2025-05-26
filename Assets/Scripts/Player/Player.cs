@@ -30,7 +30,10 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        groundMask = Physics.DefaultRaycastLayers & ~(1 << LayerMask.NameToLayer("Player"));
+        if(groundMask == 0)
+            groundMask = Physics.DefaultRaycastLayers & ~(1 << LayerMask.NameToLayer("Player"));
+        if(wallMask == 0)
+            wallMask = groundMask;
     }
     [SerializeField]
     GameObject deathEffect;
@@ -136,25 +139,51 @@ public class Player : MonoBehaviour
         
     bool grounded;
 
+    [SerializeField] private float wallCheckDistance = 0.05f;
+    [SerializeField] private LayerMask wallMask;
+
+    bool IsTouchingWall(int direction)
+    {
+        Vector2 origin = transform.position;
+        Vector2 dir = new (direction, 0);
+        float length = radius + wallCheckDistance;
+        Debug.DrawRay(origin, dir * length);
+        return Physics2D.Raycast(origin, dir, length, wallMask);
+    }
+
+
+
     void FixedUpdate()
     {
         var signInput = Mathf.Sign(_input);
+
+        bool touchingWallL = IsTouchingWall(1);
+        bool touchingWallR = IsTouchingWall(-1);
         
 
-        if (!Mathf.Approximately(_input, 0.0f)) {
-            rb.AddTorque(_input * speed * Time.deltaTime);
-            if (signInput != Mathf.Sign(rb.angularVelocity))
-                rb.AddTorque(-rb.angularVelocity * counterTorque * Time.deltaTime);
+        if (!Mathf.Approximately(_input, 0.0f))
+        {
+            int dir = -Mathf.RoundToInt(signInput);
+            if ((dir == 1 && !touchingWallL) || (dir == -1 && !touchingWallR))
+            {
+                rb.AddTorque(_input * speed * Time.deltaTime);
+                if (signInput != Mathf.Sign(rb.angularVelocity))
+                    rb.AddTorque(-rb.angularVelocity * counterTorque * Time.deltaTime);
+            }
         }
-        else {
+        else
+        {
             rb.AddTorque(-rb.angularVelocity * counterTorque * Time.deltaTime);
         }
 
         // Ground check
         grounded = IsGrounded();
 
-        if (!grounded) {
-            rb.AddForce(_input * (signInput != Mathf.Sign(-rb.linearVelocityX) ? midairCounterMovementForce : midairMovementForce) * Time.deltaTime * Vector2.left);
+        float velocitySign = Mathf.Sign(rb.linearVelocityX);
+
+        if (!grounded && ((velocitySign == 1 && !touchingWallR) || (velocitySign == -1 && !touchingWallL))) {
+            //Debug.Log("Midair force applied");
+            rb.AddForce(_input * (signInput != -velocitySign ? midairCounterMovementForce : midairMovementForce) * Time.deltaTime * Vector2.left);
         }
 
         // Jump input
@@ -175,7 +204,7 @@ public class Player : MonoBehaviour
     }
 
 
-    LayerMask groundMask;
+    [SerializeField] LayerMask groundMask;
 
     public float maxVolume = 1.0f;
     public float maxPitch = 1.5f;

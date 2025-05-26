@@ -5172,6 +5172,10 @@ MonoBehaviour:
   radius: 0.5
   coyoteTime: 0.2
   jumpCooldown: 0.2
+  wallCheckDistance: 0.05
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 0
   maxVolume: 1
   maxPitch: 2
   minPitch: 0.5
