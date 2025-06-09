@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/BluetoothDiscovery.unity
+    guid: 181ef39316ddb4d4f94ce808aef0c02f
+  - enabled: 1
     path: Assets/Scenes/main.unity
     guid: 46777689327afe64bb305decc32c265b
   - enabled: 1

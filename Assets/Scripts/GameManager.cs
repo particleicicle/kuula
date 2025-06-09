@@ -166,16 +166,15 @@ public class GameManager : MonoBehaviour
         Instantiate(loadingPrefab);
     }
 
-    public void LoadMainMenu()
+    public void LoadLevel(string _name)
     {
         DisplayLoading();
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadSceneAsync(_name);
     }
-    public void ReloadCurrentLevel(){
-
-        DisplayLoading();
-        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
-    }
+    public void LoadMainMenu()
+        => LoadLevel("main");
+    public void ReloadCurrentLevel()
+        => LoadLevel(SceneManager.GetActiveScene().name);
 
     string _currentLevelSetName;
     public string CurrentLevelSetName 
@@ -198,11 +197,9 @@ public class GameManager : MonoBehaviour
 
         string currentScene = SceneManager.GetActiveScene().name;
 
-        foreach (var set in levelSetData.levelSets)
-        {
+        foreach (var set in levelSetData.levelSets) {
             int index = set.levelSceneNames.IndexOf(currentScene);
-            if (index != -1)
-            {
+            if (index != -1) {
                 _currentLevelSetName = set.name;
                 int nextIndex = index + 1;
                 string nextScene = nextIndex >= set.levelSceneNames.Count ? "victory" : set.levelSceneNames[nextIndex % set.levelSceneNames.Count];

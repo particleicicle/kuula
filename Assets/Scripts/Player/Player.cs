@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Text;
 using System.Collections;
+using System.Linq;
 public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
@@ -30,11 +31,19 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if(groundMask == 0)
+        if (groundMask == 0)
             groundMask = Physics.DefaultRaycastLayers & ~(1 << LayerMask.NameToLayer("Player"));
-        if(wallMask == 0)
+        if (wallMask == 0)
             wallMask = groundMask;
+
+        if (pressureSensors == null && Application.platform == RuntimePlatform.Android)
+            pressureSensors = gameObject.AddComponent<BluetoothSensorReader>();
     }
+
+
+
+    [SerializeField] BluetoothSensorReader pressureSensors;
+
     [SerializeField]
     GameObject deathEffect;
 
@@ -211,6 +220,9 @@ public class Player : MonoBehaviour
     public float velocityDivider = 100.0f;
 
     public float groundRayLength = 0.05f;
+
+    public float pressureSensitivity = 0.15f;
+    public float pressureThreshold = 100.0f;
     void UpdateRollingSound(bool mute){
 
         if(Mathf.Approximately(rb.angularVelocity, 0.0f) || mute)
@@ -232,11 +244,12 @@ public class Player : MonoBehaviour
 
     float resetCounter;
 
+    public float jumpThreshold = 50.0f;
+
     float GetInput(){
         var _i = 0.0f;
 
-        if(Input.GetKey(KeyCode.Escape))
-        {
+        if(Input.GetKey(KeyCode.Escape)) {
             resetCounter += Time.deltaTime;
             if(resetCounter > 2.0f) {
                 resetCounter = 0.0f;
@@ -247,11 +260,19 @@ public class Player : MonoBehaviour
         else
             resetCounter = 0.0f;
 
-            
-        if(!jumpPressed){
-            jumpPressed = Input.GetButton("Jump") && grounded && !jumped;
+        bool jumpedSeat = false;
+        if (pressureSensors != null) {
+            jumpedSeat = pressureSensors.sensorMappedValues[4] < jumpThreshold;
+
+            float pressureDifference = pressureSensors.sensorInterpolatedValues[1] - pressureSensors.sensorInterpolatedValues[3];
+            if (Mathf.Abs(pressureDifference) >= pressureThreshold)
+                _i += (pressureDifference - (pressureThreshold * Mathf.Sign(pressureDifference))) * pressureSensitivity;
         }
-        else if(jumped && !Input.GetButton("Jump")){
+            
+        if (!jumpPressed) {
+            jumpPressed = (Input.GetButton("Jump") || jumpedSeat) && grounded && !jumped;
+        }
+        else if (jumped && !Input.GetButton("Jump")) {
             jumpPressed = false;
             jumped = false;
         }
