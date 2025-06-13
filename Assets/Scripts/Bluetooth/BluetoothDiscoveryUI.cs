@@ -17,9 +17,6 @@ public class BluetoothDiscoveryUI : MonoBehaviour
     [SerializeField] private GameObject searchButton;
     [SerializeField] private Transform searchIcon;
     [SerializeField] private float searchIconRotationSpeed = 150f;
-
-    [SerializeField] private GameObject loadGameButton;
-
     private readonly Dictionary<string, Button> deviceButtons = new();
 
     private void Awake()
@@ -42,7 +39,6 @@ public class BluetoothDiscoveryUI : MonoBehaviour
         if (isSearching)
             searchIcon.Rotate(Vector3.forward, searchIconRotationSpeed * Time.deltaTime);
 
-        loadGameButton.SetActive(BluetoothDiscovery.Instance != null && BluetoothDiscovery.Instance.ConnectedDevice != null && BluetoothDiscovery.Instance.ConnectedDevice.IsReading);
     }
 
     /// <summary>

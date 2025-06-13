@@ -3,6 +3,7 @@ using TechTweaking.Bluetooth;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.Localization;
 
 public class BluetoothDiscovery : MonoBehaviour
 {
@@ -16,18 +17,16 @@ public class BluetoothDiscovery : MonoBehaviour
 
     public BluetoothDevice ConnectedDevice { get; private set; }
 
-    
-    public void LoadMainMenu()
-        => SceneManager.LoadScene("main");
+
 
     private void Awake()
-    {
+    {/*
         if (!Application.isEditor && Application.platform != RuntimePlatform.Android)
         {
             LoadMainMenu();
             return;
         }
-
+*/
 
         if (Instance != null && Instance != this)
         {
@@ -50,7 +49,7 @@ public class BluetoothDiscovery : MonoBehaviour
 
     private void HandleOnDeviceDiscovered(BluetoothDevice device, short rssi)
     {
-        if (!discoveredDevices.ContainsKey(device.MacAddress))
+        if (!string.IsNullOrEmpty(device.Name) && !string.IsNullOrEmpty(device.MacAddress) && !discoveredDevices.ContainsKey(device.MacAddress))
         {
             discoveredDevices.Add(device.MacAddress, device);
             if(BluetoothDiscoveryUI.Instance != null)
@@ -96,6 +95,10 @@ public class BluetoothDiscovery : MonoBehaviour
         discoveryCoroutine = null;
     }
 
+    [SerializeField] LocalizedString textConnecting;
+    [SerializeField] LocalizedString textConnectionSuccess;
+    [SerializeField] LocalizedString textConnectionFail;
+
     public void AttemptToConnect(BluetoothDevice _device)
     {
         if (_device == null || string.IsNullOrEmpty(_device.MacAddress))
@@ -103,11 +106,11 @@ public class BluetoothDiscovery : MonoBehaviour
 
         if (connectCoroutine != null)
             StopCoroutine(connectCoroutine);
-            
+
         connectCoroutine = StartCoroutine(ConnectCoroutine(_device));
 
-        if(BluetoothDiscoveryUI.Instance != null)
-            BluetoothDiscoveryUI.Instance.ShowConnectingUI(true, "Yhdistetään...");
+        if (BluetoothDiscoveryUI.Instance != null)
+            BluetoothDiscoveryUI.Instance.ShowConnectingUI(true, textConnecting.GetLocalizedString());
     }
 
     public int maxAttemptTimeSeconds = 15;
@@ -142,7 +145,7 @@ public class BluetoothDiscovery : MonoBehaviour
             }
                 
 
-            BluetoothDiscoveryUI.Instance.ShowConnectingUI(true,  connected ? "Yhdistetty!" : "Yhdistäminen epäonnistui!");
+            BluetoothDiscoveryUI.Instance.ShowConnectingUI(true,  connected ? textConnectionSuccess.GetLocalizedString() : textConnectionFail.GetLocalizedString());
 
             t = 2;
             while (t-- > 0) 

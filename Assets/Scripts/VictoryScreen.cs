@@ -2,6 +2,8 @@
 using TMPro;
 using System.Text;
 using System.Collections.Generic;
+using UnityEngine.Localization.PropertyVariants;
+using System.Collections;
 
 public class VictoryScreen : MonoBehaviour
 {
@@ -13,12 +15,15 @@ public class VictoryScreen : MonoBehaviour
     [SerializeField]
     int maxLines = 10; // max lines per column
 
-    void Awake()
+    IEnumerator Start()
     {
+        yield return new WaitForEndOfFrame();
+
+        levelSetName.GetComponent<GameObjectLocalizer>().enabled = false;
         levelSetName.text = string.Format(levelSetName.text, GameManager.Instance.CurrentLevelSetName);
 
         if(!GameManager.Instance.TimerEnabled)
-            return;
+            yield break;
 
         List<string> times = GameManager.Instance.levelCompletionTimes;
         int totalLevels = times.Count;

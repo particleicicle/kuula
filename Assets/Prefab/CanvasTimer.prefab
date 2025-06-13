@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6628526443316219651}
   - component: {fileID: 3395237733084245146}
   - component: {fileID: 8195694847815524777}
+  - component: {fileID: 2553614674135437090}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -65,7 +66,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Aloita alusta
+  m_text: 'Reset
+
+    level'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d308aad5d539414a9c4ac9092014428, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 3d308aad5d539414a9c4ac9092014428, type: 2}
@@ -136,6 +139,44 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2553614674135437090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2344452801915108280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69beb381e244f92449b8c4cf954630e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackedObjects:
+  - rid: 4899221803053875280
+  references:
+    version: 2
+    RefIds:
+    - rid: 4899221803053875280
+      type: {class: TrackedUGuiGraphic, ns: UnityEngine.Localization.PropertyVariants.TrackedObjects, asm: Unity.Localization}
+      data:
+        m_Target: {fileID: 8195694847815524777}
+        m_TrackedProperties:
+          items:
+          - rid: 4899221803053875281
+        m_UpdateType: 0
+    - rid: 4899221803053875281
+      type: {class: LocalizedStringProperty, ns: UnityEngine.Localization.PropertyVariants.TrackedProperties, asm: Unity.Localization}
+      data:
+        m_Localized:
+          m_TableReference:
+            m_TableCollectionName: GUID:668b6f01d32c9fa449432365723d3b7a
+          m_TableEntryReference:
+            m_KeyId: 344975147909120
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        m_PropertyPath: m_text
 --- !u!1 &5646320867342822855
 GameObject:
   m_ObjectHideFlags: 0

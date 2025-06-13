@@ -1,18 +1,14 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.Localization;
+using System;
 public class LoadingScreen : MonoBehaviour
 {
     
     [SerializeField]
     TMP_Text textMesh;
-    [SerializeField]
-    string[] loadingTexts = new string[] {
-        "Loading.",
-        "Loading..",
-        "Loading..."
-    };
-
+    [SerializeField] LocalizedString loadingText;
     void Start()
     {
         if(!onEnableCalled){
@@ -35,11 +31,19 @@ public class LoadingScreen : MonoBehaviour
 
     public float changeDelay = (float)Fractions.OneThird;
     IEnumerator LoadingTextLoop(){
-        int index = 0;
+        int numOfPeriods = 0;
         WaitForSeconds delay = new(changeDelay);
-        while(true) {
-            textMesh.text = loadingTexts[index++];
-            index %= loadingTexts.Length;
+        Func<string> loadText = () =>
+        {
+            string text = loadingText.GetLocalizedString() + new string('.', 1 + numOfPeriods++);
+            numOfPeriods %= 3;
+            return text;
+        };
+        string loadedText = loadText();
+        while (true)
+        {
+            textMesh.text = loadedText;
+            loadedText = loadText();
             yield return delay;
         }
     }

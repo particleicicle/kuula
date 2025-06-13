@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         SceneManager.activeSceneChanged += delegate(Scene _, Scene loadedScene) {
             StopAllCoroutines();
 
-            bool inMainMenu = loadedScene.buildIndex <= 0;
+            bool inMainMenu = loadedScene.buildIndex <= 1;
 
             if(inMainMenu){
                 _currentLevelSetName = string.Empty;

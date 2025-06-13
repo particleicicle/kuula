@@ -71,4 +71,6 @@ EditorBuildSettings:
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 938567e49b432a54ab46a980f896893b, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 0266af94cb5e7694786d79bec2261e71, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: 09e6533f3ab13b340ad4cb4e40b426ad, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: aa27ccaf93c4de24281aada6713f6c39, type: 2}
   m_UseUCBPForAssetBundles: 0

@@ -5161,6 +5161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0e028de57a83384ebf84b3b5561225c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pressureSensors: {fileID: 0}
   deathEffect: {fileID: 139905393620745654}
   midairMovementForce: 200
   midairCounterMovementForce: 800
@@ -5184,3 +5185,6 @@ MonoBehaviour:
   minPitch: 0.5
   velocityDivider: 3000
   groundRayLength: 0.05
+  pressureSensitivity: 0.175
+  pressureThreshold: 80
+  jumpThreshold: 75

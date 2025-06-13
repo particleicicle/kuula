@@ -13,7 +13,15 @@ MonoBehaviour:
   m_Name: LevelSetData
   m_EditorClassIdentifier: 
   levelSets:
-  - _name: Helppo
+  - _name:
+      m_TableReference:
+        m_TableCollectionName: GUID:668b6f01d32c9fa449432365723d3b7a
+      m_TableEntryReference:
+        m_KeyId: 349665948450816
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     setNumber: 0
     levelSceneNames:
     - level0_1
@@ -22,7 +30,15 @@ MonoBehaviour:
     - level0_4
     - level0_5
     - level0_6
-  - _name: Keskitaso
+  - _name:
+      m_TableReference:
+        m_TableCollectionName: GUID:668b6f01d32c9fa449432365723d3b7a
+      m_TableEntryReference:
+        m_KeyId: 349777844092928
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     setNumber: 1
     levelSceneNames:
     - level1_1
@@ -31,7 +47,15 @@ MonoBehaviour:
     - level1_4
     - level1_5
     - level1_6
-  - _name: Vaikea
+  - _name:
+      m_TableReference:
+        m_TableCollectionName: GUID:668b6f01d32c9fa449432365723d3b7a
+      m_TableEntryReference:
+        m_KeyId: 349860807426048
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     setNumber: 2
     levelSceneNames:
     - level2_1
@@ -40,3 +64,6 @@ MonoBehaviour:
     - level2_4
     - level2_5
     - level2_6
+  references:
+    version: 2
+    RefIds: []
