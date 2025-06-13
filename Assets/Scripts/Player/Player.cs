@@ -265,9 +265,9 @@ public class Player : MonoBehaviour
             jumpedSeat = pressureSensors.sensorMappedValues[4] < jumpThreshold;
 
             float leftSidePressure = pressureSensors.sensorInterpolatedValues[0] + pressureSensors.sensorInterpolatedValues[3] +  pressureSensors.sensorInterpolatedValues[6];
-            leftSidePressure /= 2.0f;
+            leftSidePressure /= 3.0f;
             float rightSidePressure = pressureSensors.sensorInterpolatedValues[2] + pressureSensors.sensorInterpolatedValues[5] +  pressureSensors.sensorInterpolatedValues[8];
-            rightSidePressure /= 2.0f;
+            rightSidePressure /= 3.0f;
 
             float pressureDifference = leftSidePressure - rightSidePressure;
             if (Mathf.Abs(pressureDifference) >= pressureThreshold)
